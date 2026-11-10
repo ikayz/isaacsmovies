@@ -4,45 +4,58 @@
     ViewData["Title"] = "Details";
 }
 
-<h1>Details</h1>
-
-<div>
-    <h4>Movie</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Title)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Title)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ReleaseDate)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ReleaseDate)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Genre)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Genre)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Price)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Price)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Rating)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Rating)
-        </dd>
-    </dl>
+<div class="page-header mb-4">
+    <span class="page-kicker">FILM PROFILE</span>
+    <h1 class="mb-1">Details</h1>
 </div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+
+<div class="row">
+    <div class="col-md-8 col-lg-7">
+        <div class="content-card">
+            <div class="d-flex justify-content-between align-items-start flex-wrap gap-2 mb-3">
+                <h4 class="card-section-title mb-0">@Html.DisplayFor(model => model.Title)</h4>
+                <div class="d-flex gap-2">
+                    <span class="badge-genre">@Html.DisplayFor(model => model.Genre)</span>
+                    <span class="badge-rating">@Html.DisplayFor(model => model.Rating)</span>
+                </div>
+            </div>
+            <hr class="ocean-divider mb-4" />
+            <dl class="row detail-list mb-4">
+                <dt class="col-sm-4">
+                    @Html.DisplayNameFor(model => model.Title)
+                </dt>
+                <dd class="col-sm-8 fw-semibold">
+                    @Html.DisplayFor(model => model.Title)
+                </dd>
+                <dt class="col-sm-4">
+                    @Html.DisplayNameFor(model => model.ReleaseDate)
+                </dt>
+                <dd class="col-sm-8">
+                    @Html.DisplayFor(model => model.ReleaseDate)
+                </dd>
+                <dt class="col-sm-4">
+                    @Html.DisplayNameFor(model => model.Genre)
+                </dt>
+                <dd class="col-sm-8">
+                    @Html.DisplayFor(model => model.Genre)
+                </dd>
+                <dt class="col-sm-4">
+                    @Html.DisplayNameFor(model => model.Price)
+                </dt>
+                <dd class="col-sm-8 fw-bold text-teal-dark">
+                    @Html.DisplayFor(model => model.Price)
+                </dd>
+                <dt class="col-sm-4">
+                    @Html.DisplayNameFor(model => model.Rating)
+                </dt>
+                <dd class="col-sm-8">
+                    @Html.DisplayFor(model => model.Rating)
+                </dd>
+            </dl>
+            <div class="d-flex gap-3 pt-2">
+                <a asp-action="Edit" asp-route-id="@Model?.Id" class="btn btn-ocean px-4 fw-semibold">Edit</a>
+                <a asp-action="Index" class="btn btn-outline-secondary">Back to List</a>
+            </div>
+        </div>
+    </div>
 </div>

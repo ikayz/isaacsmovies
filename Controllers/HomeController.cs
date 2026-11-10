@@ -1,14 +1,35 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using MvcMovie.Data;
 using MvcMovie.Models;
 
 namespace MvcMovie.Controllers;
 
 public class HomeController : Controller
 {
-    public IActionResult Index()
+    private readonly MvcMovieContext _context;
+
+    public HomeController(MvcMovieContext context)
     {
-        return View();
+        _context = context;
+    }
+
+    public async Task<IActionResult> Index()
+    {
+        var movies = await _context.Movie
+            .OrderByDescending(m => m.ReleaseDate)
+            .ToListAsync();
+
+        ViewData["TotalMovies"] = movies.Count;
+        ViewData["Genres"] = movies
+            .Where(m => !string.IsNullOrEmpty(m.Genre))
+            .Select(m => m.Genre!)
+            .Distinct()
+            .OrderBy(g => g)
+            .ToList();
+
+        return View(movies.Take(6).ToList());
     }
 
     public IActionResult Privacy()

@@ -11,35 +11,55 @@
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Movies" asp-action="Index">Isaac's Movies</a>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark custom-navbar mb-4">
+            <div class="container">
+                <a class="navbar-brand d-flex align-items-center gap-2 fw-bold" asp-area="" asp-controller="Movies" asp-action="Index">
+                    <span class="brand-badge">🎬</span>
+                    <span>Isaac's Movies</span>
+                </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
+                    <ul class="navbar-nav flex-grow-1 ms-sm-3 gap-1">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                            <a class="nav-link nav-pill-link" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                            <a class="nav-link nav-pill-link" asp-area="" asp-controller="Movies" asp-action="Index">My Movies</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link nav-pill-link" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
                     </ul>
+                    <div class="d-flex align-items-center mt-2 mt-sm-0">
+                        <a class="btn btn-turquoise btn-sm fw-semibold px-3" asp-area="" asp-controller="Movies" asp-action="Create">
+                            + Add Movie
+                        </a>
+                    </div>
                 </div>
             </div>
         </nav>
     </header>
     <div class="container">
-        <main role="main" class="pb-3">
+        <main role="main" class="pb-5">
             @RenderBody()
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2026 - Isaac's Movies - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+    <footer class="footer custom-footer">
+        <div class="container d-flex flex-column flex-sm-row justify-content-between align-items-center">
+            <div>
+                <span class="fw-semibold text-white">Isaac's Movies</span> &copy; 2026 &mdash; Curated Film Collection
+            </div>
+            <div class="footer-links">
+                <a asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                <span class="mx-2">&bull;</span>
+                <a asp-area="" asp-controller="Movies" asp-action="Index">Catalog</a>
+                <span class="mx-2">&bull;</span>
+                <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            </div>
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>

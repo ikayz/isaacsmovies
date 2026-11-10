@@ -1,8 +1,143 @@
-﻿@{
+﻿@model IEnumerable<MvcMovie.Models.Movie>
+
+@{
     ViewData["Title"] = "Home Page";
+    var totalMovies = ViewData["TotalMovies"] as int? ?? 0;
+    var genres = ViewData["Genres"] as List<string> ?? new List<string>();
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+<!-- Hero Section -->
+<section class="hero-banner mb-5">
+    <div class="row align-items-center g-4">
+        <div class="col-lg-7">
+            <span class="hero-kicker">CURATED CINEMA DATABASE</span>
+            <h1 class="hero-title mt-2 mb-3">Welcome to Isaac's Movies</h1>
+            <p class="hero-subtitle mb-4">
+                Discover, organize, and track your favorite films across every era and genre &mdash; from timeless classics to epic blockbusters.
+            </p>
+            <div class="d-flex flex-wrap gap-3 mb-4">
+                <a asp-controller="Movies" asp-action="Index" class="btn btn-turquoise btn-lg fw-semibold px-4 shadow-sm">
+                    Browse Catalog
+                </a>
+                <a asp-controller="Movies" asp-action="Create" class="btn btn-outline-light btn-lg px-4">
+                    + Add New Movie
+                </a>
+            </div>
+
+            <form asp-controller="Movies" asp-action="Index" method="get" class="hero-search-form">
+                <div class="input-group">
+                    <input type="text" name="SearchString" class="form-control hero-search-input" placeholder="Quick search by movie title..." aria-label="Quick search by movie title" />
+                    <button class="btn btn-amber fw-semibold px-4" type="submit">Search</button>
+                </div>
+            </form>
+        </div>
+
+        <div class="col-lg-5">
+            <div class="hero-stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon">🎞️</div>
+                    <div class="stat-value">@totalMovies</div>
+                    <div class="stat-label">Movies in Library</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">🎭</div>
+                    <div class="stat-value">@genres.Count</div>
+                    <div class="stat-label">Unique Genres</div>
+                </div>
+                <div class="stat-card stat-card-wide">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <div>
+                            <div class="stat-label text-uppercase small fw-bold text-turquoise">Smart Filtering</div>
+                            <div class="text-white fw-semibold mt-1">Filter by Genre, Release Year &amp; Title</div>
+                        </div>
+                        <a asp-controller="Movies" asp-action="Index" class="btn btn-sm btn-turquoise">Try It &rarr;</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Browse by Genre Strip -->
+@if (genres.Any())
+{
+    <section class="mb-5">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h2 class="section-heading mb-0">Explore by Genre</h2>
+            <a asp-controller="Movies" asp-action="Index" class="link-ocean fw-semibold text-decoration-none">View all genres &rarr;</a>
+        </div>
+        <div class="d-flex flex-wrap gap-2">
+            <a asp-controller="Movies" asp-action="Index" class="genre-pill genre-pill-active">
+                All Movies (@totalMovies)
+            </a>
+            @foreach (var genre in genres)
+            {
+                <a asp-controller="Movies" asp-action="Index" asp-route-MovieGenre="@genre" class="genre-pill">
+                    @genre
+                </a>
+            }
+        </div>
+    </section>
+}
+
+<!-- Featured Movies Section -->
+<section class="mb-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="section-heading mb-1">Featured in Your Collection</h2>
+            <p class="text-muted mb-0">Latest releases and standout titles from your catalog</p>
+        </div>
+        <a asp-controller="Movies" asp-action="Index" class="btn btn-ocean-outline">
+            Full Catalog &rarr;
+        </a>
+    </div>
+
+    @if (Model != null && Model.Any())
+    {
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+            @foreach (var movie in Model)
+            {
+                <div class="col">
+                    <div class="movie-card h-100">
+                        <div class="movie-card-accent"></div>
+                        <div class="movie-card-body d-flex flex-column justify-content-between h-100">
+                            <div>
+                                <div class="d-flex justify-content-between align-items-start gap-2 mb-2">
+                                    <span class="badge-genre">@movie.Genre</span>
+                                    @if (!string.IsNullOrEmpty(movie.Rating))
+                                    {
+                                        <span class="badge-rating">@movie.Rating</span>
+                                    }
+                                </div>
+                                <h3 class="movie-card-title mt-2">
+                                    <a asp-controller="Movies" asp-action="Details" asp-route-id="@movie.Id" class="stretched-link-title">
+                                        @movie.Title
+                                    </a>
+                                </h3>
+                                <div class="movie-meta text-muted small mt-2">
+                                    <span>📅 Released @movie.ReleaseDate.ToString("MMM d, yyyy")</span>
+                                </div>
+                            </div>
+
+                            <div class="movie-card-footer d-flex justify-content-between align-items-center mt-4 pt-3">
+                                <span class="movie-price">@movie.Price.ToString("C")</span>
+                                <div class="d-flex gap-2">
+                                    <a asp-controller="Movies" asp-action="Details" asp-route-id="@movie.Id" class="btn btn-sm btn-ocean-soft">Details</a>
+                                    <a asp-controller="Movies" asp-action="Edit" asp-route-id="@movie.Id" class="btn btn-sm btn-outline-secondary">Edit</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <div class="content-card text-center py-5">
+            <h4 class="text-ocean">No movies in the catalog yet</h4>
+            <p class="text-muted mb-3">Start building your personal collection by adding your first movie.</p>
+            <a asp-controller="Movies" asp-action="Create" class="btn btn-ocean">+ Add First Movie</a>
+        </div>
+    }
+</section>
